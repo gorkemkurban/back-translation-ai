@@ -1,0 +1,29 @@
+{
+  "name": "back-translation-ai",
+  "version": "1.0.0",
+  "description": "A translaton method enhanced by AI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gorkemkurban/back-translation-ai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gorkemkurban/back-translation-ai/issues"
+  },
+  "homepage": "https://github.com/gorkemkurban/back-translation-ai#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "axios": "^1.8.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.89.0",
+    "readline-sync": "^1.4.10"
+  }
+}
