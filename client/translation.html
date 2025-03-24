@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akademik Çeviri Uygulaması</title>
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-light: #4895ef;
+      --secondary: #3f37c9;
+      --background: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #2b2d42;
+      --text-light: #8d99ae;
+      --success: #4cc9f0;
+      --warning: #f72585;
+      --border: #e9ecef;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+      font-size: 2.2rem;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .text-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid var(--primary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      transition: transform 0.3s, box-shadow 0.3s;
+      white-space: pre-wrap;
+    }
+
+    .analysis-card {
+      border-left: 4px solid var(--warning);
+      margin: 15px 0;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 15px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px;
+      margin: 15px 0;
+      transition: all 0.3s;
+      background: var(--card-bg);
+      color: var(--text);
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: block;
+      margin: 25px auto;
+      width: 220px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .fade-out {
+      animation: fadeOut 0.5s forwards;
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; height: 0; padding: 0; margin: 0; overflow: hidden; }
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+
+    .progress {
+      height: 100%;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #4cc9f0, #4361ee);
+      transition: width 0.5s;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="pageTitle">Akademik Çeviri Uygulaması</h1>
+    
+    <div id="translationFlow">
+      <!-- Aşama 1: Orijinal Metin -->
+      <div id="originalTextSection">
+        <h2 id="sourceTextHeader"></h2>
+        <div class="text-card" id="originalTextCard"></div>
+        
+        <h2>Türkçe Çeviriniz</h2>
+        <textarea id="userTranslation" placeholder="Metni buraya çevirin..." disabled></textarea>
+        
+        <button id="submitTranslation" disabled>Çeviriyi Onayla</button>
+      </div>
+      
+      <!-- Aşama 2: Geri Çeviri -->
+      <div id="backTranslationSection" class="hidden">
+        <div class="text-card">
+          <h3>Yaptığınız Çeviri:</h3>
+          <p id="userTranslationDisplay"></p>
+        </div>
+        
+        <h2>Orijinal Dile Geri Çevirin</h2>
+        <textarea id="backTranslation" placeholder="Çevirinizi orijinal dile çevirin"></textarea>
+        <button id="analyzeBtn">Analiz Et</button>
+      </div>
+      
+      <!-- Aşama 3: Sonuçlar -->
+      <div id="analysisResult" class="hidden">
+        <h2>Kapsamlı Analiz Sonuçları</h2>
+        
+        <div class="text-card analysis-card">
+          <h3>🇹🇷 Türkçe Çeviri Analizi</h3>
+          <div id="turkishAnalysis"></div>
+        </div>
+        
+        <div class="text-card analysis-card">
+          <h3>🔙 Geri Çeviri Analizi</h3>
+          <div id="backTranslationAnalysis"></div>
+        </div>
+        
+        <div class="text-card analysis-card">
+          <h3>🔄 Metin Karşılaştırması</h3>
+          <div id="comparisonAnalysis"></div>
+        </div>
+        
+        <div class="text-card">
+          <h3>Genel Değerlendirme</h3>
+          <div class="progress-bar">
+            <div class="progress" id="scoreBar"></div>
+          </div>
+          <p id="scoreText"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Seçilen parametreleri al
+    const targetLanguage = sessionStorage.getItem('targetLanguage') || 'fr';
+    const field = sessionStorage.getItem('field') || 'medicine';
+    const languageNames = { fr: 'Fransızca', es: 'İspanyolca' };
+    const fieldNames = { medicine: 'Tıp', law: 'Hukuk' };
+
+    // DOM Elementlerini güvenli şekilde seç
+    const getElementSafe = (id) => {
+      const el = document.getElementById(id);
+      if (!el) console.error(`Element bulunamadı: #${id}`);
+      return el;
+    };
+
+    const elements = {
+      pageTitle: getElementSafe('pageTitle'),
+      sourceTextHeader: getElementSafe('sourceTextHeader'),
+      originalTextCard: getElementSafe('originalTextCard'),
+      userTranslation: getElementSafe('userTranslation'),
+      submitBtn: getElementSafe('submitTranslation'),
+      backTranslationSection: getElementSafe('backTranslationSection'),
+      analyzeBtn: getElementSafe('analyzeBtn'),
+      analysisResult: getElementSafe('analysisResult'),
+      userTranslationDisplay: getElementSafe('userTranslationDisplay'),
+      turkishAnalysis: getElementSafe('turkishAnalysis'),
+      backTranslationAnalysis: getElementSafe('backTranslationAnalysis'),
+      comparisonAnalysis: getElementSafe('comparisonAnalysis'),
+      scoreBar: getElementSafe('scoreBar'),
+      scoreText: getElementSafe('scoreText'),
+      backTranslation: getElementSafe('backTranslation') // Bu satır eklendi
+    };
+
+    // Uygulama başlangıcı
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!elements.backTranslation) {
+        console.error('Back translation elementi yüklenemedi!');
+        return;
+      }
+      
+      setupUI();
+      await loadGeneratedText();
+      setupEventListeners();
+    });
+
+    function setupUI() {
+      elements.pageTitle.textContent = `${fieldNames[field]} Çeviri Uygulaması`;
+      elements.sourceTextHeader.innerHTML = `
+        <span style="background: #4895ef; color: white; padding: 2px 8px; border-radius: 10px;">
+          ${languageNames[targetLanguage]}
+        </span>
+        <span style="background: #f72585; color: white; padding: 2px 8px; border-radius: 10px;">
+          ${fieldNames[field]}
+        </span>
+        Akademik Metin
+      `;
+    }
+
+    async function loadGeneratedText() {
+      elements.originalTextCard.innerHTML = '<span class="loading"></span> Metin oluşturuluyor...';
+      
+      try {
+        const response = await fetch('http://localhost:3000/generate-text', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ targetLanguage, field })
+        });
+
+        const data = await response.json();
+        elements.originalTextCard.textContent = data.text || data.fallback;
+        elements.userTranslation.disabled = false;
+        elements.submitBtn.disabled = false;
+
+      } catch (error) {
+        elements.originalTextCard.textContent = 'Metin yüklenemedi. Lütfen sayfayı yenileyin.';
+        console.error('Hata:', error);
+      }
+    }
+
+    function setupEventListeners() {
+      elements.submitBtn.addEventListener('click', () => {
+        if (!elements.userTranslation.value.trim()) {
+          alert('Lütfen çeviri yapın!');
+          return;
+        }
+        
+        elements.userTranslationDisplay.textContent = elements.userTranslation.value;
+        elements.originalTextCard.classList.add('fade-out');
+        elements.userTranslation.classList.add('fade-out');
+        
+        setTimeout(() => {
+          elements.originalTextCard.classList.add('hidden');
+          elements.userTranslation.classList.add('hidden');
+          elements.backTranslationSection.classList.remove('hidden');
+        }, 500);
+      });
+
+      elements.analyzeBtn.addEventListener('click', async () => {
+        const backTranslationText = elements.backTranslation.value; // Düzeltildi
+        
+        if (!backTranslationText.trim()) {
+          alert('Lütfen geri çeviri yapın!');
+          return;
+        }
+        
+        try {
+          elements.analyzeBtn.disabled = true;
+          elements.analyzeBtn.innerHTML = '<span class="loading"></span> Analiz ediliyor...';
+          
+          const response = await fetch('http://localhost:3000/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              originalText: elements.originalTextCard.textContent,
+              userTranslation: elements.userTranslation.value,
+              backTranslation: backTranslationText, // Düzeltildi
+              targetLanguage,
+              field
+            })
+          });
+
+          const data = await response.json();
+          displayAnalysisResults(data.analysis);
+          
+        } catch (error) {
+          console.error('Analiz hatası:', error);
+          elements.analysisResult.innerHTML = `
+            <div class="text-card">
+              <h3>Analiz Hatası</h3>
+              <p>${error.message}</p>
+            </div>
+          `;
+        } finally {
+          elements.analyzeBtn.disabled = false;
+          elements.analyzeBtn.textContent = 'Analiz Et';
+          elements.analysisResult.classList.remove('hidden');
+        }
+      });
+    }
+
+    function displayAnalysisResults(analysis) {
+      if (!analysis) {
+        console.error('Analiz verisi yok!');
+        return;
+      }
+      
+      elements.turkishAnalysis.innerHTML = analysis.turkishAnalysis?.replace(/\n/g, '<br>') || 'Analiz yok';
+      elements.backTranslationAnalysis.innerHTML = analysis.backTranslationAnalysis?.replace(/\n/g, '<br>') || 'Analiz yok';
+      elements.comparisonAnalysis.innerHTML = analysis.comparisonAnalysis?.replace(/\n/g, '<br>') || 'Analiz yok';
+      
+      const score = analysis.score || 0;
+      elements.scoreBar.style.width = `${score}%`;
+      elements.scoreText.textContent = `Genel Puan: ${score}/100`;
+    }
+  </script>
+</body>
+</html>
