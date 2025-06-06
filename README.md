@@ -1,51 +1,43 @@
-Linguaiser
-About the Project
-Linguaiser is an AI-powered back translation application designed to help users improve their language learning and translation skills through a multi-step back translation process. Using the Google Gemini AI model, the app generates original texts, allows users to translate and back-translate them, then provides detailed feedback by comparing the original and back-translated texts.
+# Linguaiser
 
-Features
-Generates meaningful and level-appropriate texts in the target language
+## About the Project
 
-Compares user translations with the original texts
+**Linguaiser** is an AI-powered back translation application designed to help users improve their language learning and translation skills through a multi-step back translation process. Using the Google Gemini AI model, the app generates original texts, allows users to translate and back-translate them, then provides detailed feedback by comparing the original and back-translated texts.
 
-AI-powered error analysis and detailed feedback
+## Features
 
-Multi-step translation cycle (original → translation → back-translation)
+- Generates meaningful and level-appropriate texts in the target language  
+- Compares user translations with the original texts  
+- AI-powered error analysis and detailed feedback  
+- Multi-step translation cycle (original → translation → back-translation)  
+- Interactive learning process to accelerate language acquisition  
 
-Interactive learning process to accelerate language acquisition
+## Use Cases
 
-Use Cases
-Language classrooms and individual learning
+- Language classrooms and individual learning  
+- Preparation for international language exams  
+- Training for translators and interpreters  
+- Integration with online education platforms and corporate training  
+- AI-supported educational applications  
 
-Preparation for international language exams
+## Technology Stack
 
-Training for translators and interpreters
+- Backend: Node.js  
+- Frontend: Currently vanilla HTML & CSS (React.js planned)  
+- AI Model: Google Gemini AI (`gemini-1.5-flash`), with plans to upgrade to more advanced models  
+- Future Plans: Full MERN stack integration for user management and enhanced UI  
 
-Integration with online education platforms and corporate training
+## Installation and Usage
 
-AI-supported educational applications
-
-Technology Stack
-Backend: Node.js
-
-Frontend: Currently vanilla HTML & CSS (React.js planned)
-
-AI Model: Google Gemini AI (gemini-1.5-flash), with plans to upgrade to more advanced models
-
-Future Plans: Full MERN stack integration for user management and enhanced UI
-
-Installation and Usage
-Clone the repository:
-
-bash
-Kopyala
-Düzenle
-git clone https://github.com/yourUsername/linguaiser.git  
+1. Clone the repository:  
+   ```bash
+   git clone https://github.com/yourUsername/linguaiser.git
 Install dependencies:
 
 bash
 Kopyala
 Düzenle
-npm install  
+npm install
 Set environment variables (e.g., Google Gemini API key).
 
 Start the server:
@@ -53,7 +45,7 @@ Start the server:
 bash
 Kopyala
 Düzenle
-npm start  
+npm start
 Open your browser and go to http://localhost:3000.
 
 Future Plans
