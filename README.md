@@ -20,44 +20,21 @@
 - Integration with online education platforms and corporate training  
 - AI-supported educational applications  
 
-## Technology Stack
+Technology Stack
 
 - Backend: Node.js  
 - Frontend: Currently vanilla HTML & CSS (React.js planned)  
 - AI Model: Google Gemini AI (`gemini-1.5-flash`), with plans to upgrade to more advanced models  
 - Future Plans: Full MERN stack integration for user management and enhanced UI  
 
-## Installation and Usage
+## Future Plans
+-Modern UI development with React.js
+-User registration and personalized learning experience via MERN stack
+-Integration of more advanced AI models for improved translation accuracy
+-Expansion into the Linguaiser platform hosting multiple translation and language learning tools
 
-1. Clone the repository:  
-   ```bash
-   git clone https://github.com/yourUsername/linguaiser.git
-Install dependencies:
-
-bash
-Kopyala
-Düzenle
-npm install
-Set environment variables (e.g., Google Gemini API key).
-
-Start the server:
-
-bash
-Kopyala
-Düzenle
-npm start
-Open your browser and go to http://localhost:3000.
-
-Future Plans
-Modern UI development with React.js
-
-User registration and personalized learning experience via MERN stack
-
-Integration of more advanced AI models for improved translation accuracy
-
-Expansion into the Linguaiser platform hosting multiple translation and language learning tools
-
-Contributors
-Görkem Kurban (Project Owner & Developer)
-
-License
+## Contributors
+- Görkem Kurban (Project Owner & Developer)
+- Onur Özcan (Advisor and Project Manager)
+  
+## License
