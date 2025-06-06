@@ -8,13 +8,23 @@ app.use(cors());
 app.use(express.json());
 
 const API_KEY = process.env.GEMINI_API_KEY;
+
+// API key kontrolü
+if (!API_KEY) {
+  console.error("❌ HATA: GEMINI_API_KEY bulunamadı!");
+  console.log("📝 Çözüm: .env dosyasına GEMINI_API_KEY=your_key_here ekleyin");
+  process.exit(1);
+}
+
+console.log("✅ API Key yüklendi:", API_KEY.substring(0, 10) + "...");
+
 const genAI = new GoogleGenerativeAI(API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // Dil ve alan eşleme tablosu
 const languageMap = {
-  fr: { apiName: "French" },
-  es: { apiName: "Spanish" }
+  fr: { apiName: "French", nativeName: "Fransızca" },
+  es: { apiName: "Spanish", nativeName: "İspanyolca" }
 };
 
 const fieldMap = {
@@ -36,8 +46,84 @@ const fieldMap = {
   }
 };
 
-// Metin oluşturma endpoint'i
+// Terminoloji çıkarma fonksiyonu
+async function extractTerminology(text, language, field) {
+  const langName = languageMap[language]?.apiName || language;
+  const fieldName = field === 'medicine' ? 'tıp' : 'hukuk';
+  
+  const terminologyPrompt = `
+    Aşağıdaki ${langName} dilindeki ${fieldName} alanı metninden önemli akademik/teknik terimleri çıkar.
+    Sadece alana özel, teknik terimleri seç. Genel kelimeler dahil etme.
+    Maksimum 8-10 terim seç ve JSON formatında döndür:
+    
+    Metin: ${text}
+    
+    Sadece şu JSON formatında yanıt ver, başka açıklama ekleme:
+    {"terminology": [{"word": "terim", "translation": "türkçe_çeviri"}]}
+  `;
+
+  try {
+    console.log("🔍 Terminoloji çıkarılıyor...");
+    const result = await model.generateContent(terminologyPrompt);
+    const response = await result.response.text();
+    
+    // JSON'u temizle ve parse et
+    const cleanedResponse = response
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim();
+    
+    console.log("📝 AI terminoloji yanıtı:", cleanedResponse);
+    
+    const terminology = JSON.parse(cleanedResponse);
+    console.log("✅ Terminoloji başarıyla çıkarıldı:", terminology);
+    
+    return terminology;
+  } catch (error) {
+    console.error("❌ Terminoloji çıkarma hatası:", error.message);
+    
+    // Fallback terminoloji
+    const fallbackTerms = {
+      medicine: {
+        fr: [
+          { word: "immunothérapie", translation: "bağışıklık tedavisi" },
+          { word: "oncologique", translation: "onkolojik" },
+          { word: "pathologie", translation: "patoloji" },
+          { word: "diagnostic", translation: "tanı" }
+        ],
+        es: [
+          { word: "terapia génica", translation: "gen tedavisi" },
+          { word: "patología", translation: "patoloji" },
+          { word: "diagnóstico", translation: "tanı" },
+          { word: "tratamiento", translation: "tedavi" }
+        ]
+      },
+      law: {
+        fr: [
+          { word: "jurisprudence", translation: "içtihat" },
+          { word: "non-ingérence", translation: "müdahalesizlik" },
+          { word: "souveraineté", translation: "egemenlik" },
+          { word: "tribunal", translation: "mahkeme" }
+        ],
+        es: [
+          { word: "jurisprudencia", translation: "içtihat" },
+          { word: "soberanía", translation: "egemenlik" },
+          { word: "jurisdicción", translation: "yargı yetkisi" },
+          { word: "derecho internacional", translation: "uluslararası hukuk" }
+        ]
+      }
+    };
+    
+    return { 
+      terminology: fallbackTerms[field]?.[language] || fallbackTerms.medicine.fr 
+    };
+  }
+}
+
+// Metin oluşturma endpoint'i (terminoloji ile birlikte)
 app.post("/generate-text", async (req, res) => {
+  console.log("📨 Generate-text isteği alındı:", req.body);
+  
   const { targetLanguage, field } = req.body;
   const langConfig = languageMap[targetLanguage] || languageMap.fr;
   const fieldConfig = fieldMap[field] || fieldMap.medicine;
@@ -47,25 +133,43 @@ app.post("/generate-text", async (req, res) => {
       .replace('{LANGUAGE}', langConfig.apiName)
       .replace('{FIELD}', field);
 
+    console.log("🔄 Gemini'ye gönderilen prompt:", prompt);
+
     const result = await model.generateContent(prompt);
     const text = (await result.response.text())
       .replace(/```/g, '')
       .replace(/"/g, '')
       .trim();
 
-    res.json({ success: true, text });
+    console.log("✅ Metin başarıyla oluşturuldu");
+
+    // Terminolojiyi çıkar
+    const terminology = await extractTerminology(text, targetLanguage, field);
+
+    console.log("✅ Başarılı yanıt hazırlandı");
+    res.json({ 
+      success: true, 
+      text,
+      terminology: terminology.terminology || []
+    });
 
   } catch (error) {
+    console.error("❌ Generate-text hatası:", error.message);
+    console.error("📋 Hata detayı:", error);
+    
     res.status(500).json({ 
       success: false,
-      message: "Metin oluşturulamadı",
-      fallback: fieldConfig.examples[targetLanguage] || fieldConfig.examples.fr
+      message: "Metin oluşturulamadı: " + error.message,
+      fallback: fieldConfig.examples[targetLanguage] || fieldConfig.examples.fr,
+      terminology: []
     });
   }
 });
 
 // Analiz endpoint'i
 app.post("/analyze", async (req, res) => {
+  console.log("📨 Analyze isteği alındı:", req.body);
+  
   try {
     const { originalText, userTranslation, backTranslation, targetLanguage, field } = req.body;
     const langName = languageMap[targetLanguage]?.apiName || targetLanguage;
@@ -106,6 +210,8 @@ app.post("/analyze", async (req, res) => {
       Respond in Turkish.
     `;
 
+    console.log("🔄 Analiz için 3 prompt gönderiliyor...");
+
     const [turkishAnalysis, backTranslationAnalysis, comparisonAnalysis] = await Promise.all([
       model.generateContent(turkishPrompt),
       model.generateContent(backTranslationPrompt),
@@ -118,6 +224,8 @@ app.post("/analyze", async (req, res) => {
       comparisonAnalysis.response
     ]);
 
+    console.log("✅ Analiz başarıyla tamamlandı");
+
     res.json({
       success: true,
       analysis: {
@@ -129,9 +237,35 @@ app.post("/analyze", async (req, res) => {
     });
 
   } catch (error) {
+    console.error("❌ Analyze hatası:", error.message);
+    console.error("📋 Hata detayı:", error);
+    
     res.status(500).json({ 
       success: false,
       message: error.message 
+    });
+  }
+});
+
+// Bağımsız terminoloji çıkarma endpoint'i (isteğe bağlı)
+app.post("/extract-terminology", async (req, res) => {
+  console.log("📨 Extract-terminology isteği alındı:", req.body);
+  
+  try {
+    const { text, language, field } = req.body;
+    const terminology = await extractTerminology(text, language, field);
+    
+    res.json({
+      success: true,
+      terminology: terminology.terminology || []
+    });
+    
+  } catch (error) {
+    console.error("❌ Extract-terminology hatası:", error.message);
+    res.status(500).json({ 
+      success: false,
+      message: error.message,
+      terminology: []
     });
   }
 });
@@ -143,5 +277,9 @@ function calculateScore(analyses) {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server http://localhost:${PORT} üzerinde çalışıyor`);
+  console.log(`🚀 Server http://localhost:${PORT} üzerinde çalışıyor`);
+  console.log("📡 Endpoints:");
+  console.log("   POST /generate-text (terminoloji ile birlikte)");
+  console.log("   POST /analyze");
+  console.log("   POST /extract-terminology (bağımsız)");
 });

@@ -1,97 +1,255 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Akademik Çeviri Uygulaması</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f0f2f5;
-    }
-    .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 90%;
-      max-width: 500px;
-    }
-    select, button {
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      margin: 1rem 0;
-      border-radius: 5px;
-      width: 100%;
-    }
-    select {
-      border: 1px solid #ddd;
-    }
-    button {
-      background: #4361ee;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #3a56d4;
-    }
-    .form-group {
-      margin-bottom: 1.5rem;
-      text-align: left;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-  </style>
+  <title>Akademik Çeviri Uygulaması - Başlangıç</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Akademik Çeviri Uygulaması</h1>
-    <form id="languageForm">
-      <div class="form-group">
-        <label for="targetLanguage">Hedef Dil</label>
-        <select id="targetLanguage" required>
-          <option value="">-- Dil Seçin --</option>
-          <option value="fr">Fransızca</option>
-          <option value="es">İspanyolca</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label for="field">Akademik Alan</label>
-        <select id="field" required>
-          <option value="">-- Alan Seçin --</option>
-          <option value="medicine">Tıp</option>
-          <option value="law">Hukuk</option>
-        </select>
-      </div>
-      
-      <button type="submit">Başla</button>
-    </form>
+  <!-- Theme Toggle -->
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <span id="theme-icon">🌙</span>
   </div>
 
+  <div class="container">
+    <div class="flex flex-center" style="min-height: 100vh;">
+      <div class="card" style="max-width: 600px; width: 100%;">
+        <div class="text-center mb-lg">
+          <h1 class="glow-effect">🎓 Akademik Çeviri Uygulaması</h1>
+          <p class="text-muted">Profesyonel çeviri deneyiminiz için dil ve alan seçimi yapın</p>
+        </div>
+        
+        <form id="languageForm">
+          <div class="form-group">
+            <label for="targetLanguage" class="form-label">
+              🌍 Hedef Dil
+            </label>
+            <select id="targetLanguage" class="form-select" required>
+              <option value="">-- Çeviri yapılacak dili seçin --</option>
+              <option value="fr">🇫🇷 Fransızca</option>
+              <option value="es">🇪🇸 İspanyolca</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="field" class="form-label">
+              📚 Akademik Alan
+            </label>
+            <select id="field" class="form-select" required>
+              <option value="">-- Uzmanlık alanınızı seçin --</option>
+              <option value="medicine">⚕️ Tıp</option>
+              <option value="law">⚖️ Hukuk</option>
+            </select>
+          </div>
+          
+          <div class="text-center mt-lg">
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+              <span>Çeviri Uygulamasına Başla</span>
+              <span>🚀</span>
+            </button>
+          </div>
+          
+          <div class="text-center mt-md">
+            <p class="text-muted" style="font-size: 0.9rem;">
+              💡 İpucu: Seçiminizi yaptıktan sonra size özel akademik metin üretilecektir
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Background Elements -->
+  <div style="position: fixed; top: 10%; left: 10%; width: 100px; height: 100px; background: var(--primary); border-radius: 50%; opacity: 0.1; z-index: -1; animation: float 6s ease-in-out infinite;"></div>
+  <div style="position: fixed; top: 60%; right: 15%; width: 150px; height: 150px; background: var(--accent); border-radius: 50%; opacity: 0.1; z-index: -1; animation: float 8s ease-in-out infinite reverse;"></div>
+  <div style="position: fixed; bottom: 20%; left: 20%; width: 80px; height: 80px; background: var(--secondary); border-radius: 50%; opacity: 0.1; z-index: -1; animation: float 7s ease-in-out infinite;"></div>
+
   <script>
+    // Theme Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        icon.textContent = '☀️';
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        icon.textContent = '🌙';
+      }
+    }
+
+    // Form handling with animations
     document.getElementById('languageForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      
       const targetLanguage = document.getElementById('targetLanguage').value;
       const field = document.getElementById('field').value;
       
-      // Seçilenleri sessionStorage'a kaydet
+      if (!targetLanguage || !field) {
+        showNotification('Lütfen tüm alanları doldurun!', 'warning');
+        return;
+      }
+      
+      // Button loading state
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalContent = submitBtn.innerHTML;
+      
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <div class="loading"></div>
+        <span>Hazırlanıyor...</span>
+      `;
+      
+      // Save selections
       sessionStorage.setItem('targetLanguage', targetLanguage);
       sessionStorage.setItem('field', field);
       
-      // Translation sayfasına yönlendir
-      window.location.href = 'translation.html';
+      // Show success notification
+      showNotification('Seçimleriniz kaydedildi! Yönlendiriliyorsunuz...', 'success');
+      
+      // Simulate loading and redirect
+      setTimeout(() => {
+        window.location.href = 'translation.html';
+      }, 1500);
+    });
+
+    // Enhanced form interactions
+    const selects = document.querySelectorAll('.form-select');
+    selects.forEach(select => {
+      select.addEventListener('change', function() {
+        this.style.transform = 'scale(1.02)';
+        setTimeout(() => {
+          this.style.transform = 'scale(1)';
+        }, 150);
+        
+        // Show selection feedback
+        if (this.value) {
+          this.style.borderColor = 'var(--success)';
+          this.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.1)';
+        }
+      });
+      
+      select.addEventListener('blur', function() {
+        if (this.value) {
+          this.style.borderColor = 'var(--glass-border)';
+          this.style.boxShadow = 'none';
+        }
+      });
+    });
+
+    // Notification system
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.style.cssText = `
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        padding: 1rem 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: var(--glass-backdrop);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        color: var(--text-primary);
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+        box-shadow: var(--shadow-lg);
+      `;
+      
+      // Add type-specific styling
+      if (type === 'success') {
+        notification.style.borderColor = 'var(--success)';
+        notification.innerHTML = `✅ ${message}`;
+      } else if (type === 'warning') {
+        notification.style.borderColor = 'var(--warning)';
+        notification.innerHTML = `⚠️ ${message}`;
+      } else {
+        notification.innerHTML = `ℹ️ ${message}`;
+      }
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
+    }
+
+    // Page load animation
+    document.addEventListener('DOMContentLoaded', () => {
+      const card = document.querySelector('.card');
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      
+      setTimeout(() => {
+        card.style.transition = 'all 0.6s ease-out';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 100);
     });
   </script>
+
+  <style>
+    /* Additional animations for this page */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes slideOut {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+    }
+
+    /* Enhanced form styling */
+    .form-select {
+      position: relative;
+      background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2'><polyline points='6,9 12,15 18,9'></polyline></svg>");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 20px;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .form-select:focus {
+      background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2'><polyline points='18,15 12,9 6,15'></polyline></svg>");
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        padding: var(--space-md);
+      }
+      
+      .card {
+        padding: var(--space-lg);
+      }
+      
+      h1 {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
 </body>
 </html>

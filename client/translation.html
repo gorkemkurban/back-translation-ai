@@ -1,202 +1,167 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Akademik Çeviri Uygulaması</title>
-  <style>
-    :root {
-      --primary: #4361ee;
-      --primary-light: #4895ef;
-      --secondary: #3f37c9;
-      --background: #f8f9fa;
-      --card-bg: #ffffff;
-      --text: #2b2d42;
-      --text-light: #8d99ae;
-      --success: #4cc9f0;
-      --warning: #f72585;
-      --border: #e9ecef;
-    }
-
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background-color: var(--background);
-      color: var(--text);
-      line-height: 1.6;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .container {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-weight: 600;
-      font-size: 2.2rem;
-      background: linear-gradient(90deg, var(--primary), var(--primary-light));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .text-card {
-      background: var(--card-bg);
-      border-radius: 10px;
-      padding: 20px;
-      margin: 20px 0;
-      border-left: 4px solid var(--primary);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      transition: transform 0.3s, box-shadow 0.3s;
-      white-space: pre-wrap;
-    }
-
-    .analysis-card {
-      border-left: 4px solid var(--warning);
-      margin: 15px 0;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      padding: 15px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 16px;
-      margin: 15px 0;
-      transition: all 0.3s;
-      background: var(--card-bg);
-      color: var(--text);
-    }
-
-    button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 500;
-      transition: all 0.3s;
-      display: block;
-      margin: 25px auto;
-      width: 220px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .fade-out {
-      animation: fadeOut 0.5s forwards;
-    }
-
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; height: 0; padding: 0; margin: 0; overflow: hidden; }
-    }
-
-    .progress-bar {
-      height: 10px;
-      background: #e0e0e0;
-      border-radius: 5px;
-      margin: 10px 0;
-    }
-
-    .progress {
-      height: 100%;
-      border-radius: 5px;
-      background: linear-gradient(90deg, #4cc9f0, #4361ee);
-      transition: width 0.5s;
-    }
-
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Theme Toggle -->
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <span id="theme-icon">🌙</span>
+  </div>
+
   <div class="container">
-    <h1 id="pageTitle">Akademik Çeviri Uygulaması</h1>
-    
-    <div id="translationFlow">
-      <!-- Aşama 1: Orijinal Metin -->
-      <div id="originalTextSection">
-        <h2 id="sourceTextHeader"></h2>
-        <div class="text-card" id="originalTextCard"></div>
-        
-        <h2>Türkçe Çeviriniz</h2>
-        <textarea id="userTranslation" placeholder="Metni buraya çevirin..." disabled></textarea>
-        
-        <button id="submitTranslation" disabled>Çeviriyi Onayla</button>
-      </div>
+    <div class="grid grid-4" style="grid-template-columns: 1fr 320px; gap: 2rem; margin-top: 2rem;">
       
-      <!-- Aşama 2: Geri Çeviri -->
-      <div id="backTranslationSection" class="hidden">
-        <div class="text-card">
-          <h3>Yaptığınız Çeviri:</h3>
-          <p id="userTranslationDisplay"></p>
-        </div>
+      <!-- Main Content -->
+      <div class="main-content">
+        <header class="text-center mb-lg">
+          <h1 id="pageTitle" class="glow-effect">Akademik Çeviri Uygulaması</h1>
+          <p class="text-muted">Profesyonel çeviri deneyimi ve detaylı analiz</p>
+        </header>
         
-        <h2>Orijinal Dile Geri Çevirin</h2>
-        <textarea id="backTranslation" placeholder="Çevirinizi orijinal dile çevirin"></textarea>
-        <button id="analyzeBtn">Analiz Et</button>
-      </div>
-      
-      <!-- Aşama 3: Sonuçlar -->
-      <div id="analysisResult" class="hidden">
-        <h2>Kapsamlı Analiz Sonuçları</h2>
-        
-        <div class="text-card analysis-card">
-          <h3>🇹🇷 Türkçe Çeviri Analizi</h3>
-          <div id="turkishAnalysis"></div>
-        </div>
-        
-        <div class="text-card analysis-card">
-          <h3>🔙 Geri Çeviri Analizi</h3>
-          <div id="backTranslationAnalysis"></div>
-        </div>
-        
-        <div class="text-card analysis-card">
-          <h3>🔄 Metin Karşılaştırması</h3>
-          <div id="comparisonAnalysis"></div>
-        </div>
-        
-        <div class="text-card">
-          <h3>Genel Değerlendirme</h3>
-          <div class="progress-bar">
-            <div class="progress" id="scoreBar"></div>
+        <div id="translationFlow">
+          <!-- Aşama 1: Orijinal Metin -->
+          <div id="originalTextSection" class="fade-in">
+            <div class="card mb-lg">
+              <div class="flex flex-between mb-md">
+                <h2 id="sourceTextHeader" class="flex gap-sm" style="margin-bottom: 0;"></h2>
+                <div class="badge">Adım 1/3</div>
+              </div>
+              <div id="originalTextCard" class="floating-card mt-md">
+                <div class="loading"></div> Metin oluşturuluyor...
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>🇹🇷 Türkçe Çeviriniz</h3>
+              <div class="form-group">
+                <textarea id="userTranslation" class="form-textarea" placeholder="Metni buraya çevirin..." disabled rows="6"></textarea>
+              </div>
+              <button id="submitTranslation" class="btn btn-primary btn-lg" disabled>
+                <span>Çeviriyi Onayla</span>
+                <span>→</span>
+              </button>
+            </div>
           </div>
-          <p id="scoreText"></p>
+          
+          <!-- Aşama 2: Geri Çeviri -->
+          <div id="backTranslationSection" class="hidden">
+            <div class="card mb-lg">
+              <div class="flex flex-between mb-md">
+                <h2>Geri Çeviri Aşaması</h2>
+                <div class="badge badge-warning">Adım 2/3</div>
+              </div>
+              
+              <div class="floating-card mb-lg">
+                <h4>✅ Yaptığınız Çeviri:</h4>
+                <p id="userTranslationDisplay" class="text-secondary"></p>
+              </div>
+              
+              <h3>🔄 Orijinal Dile Geri Çevirin</h3>
+              <div class="form-group">
+                <textarea id="backTranslation" class="form-textarea" placeholder="Çevirinizi orijinal dile çevirin" rows="6"></textarea>
+              </div>
+              <button id="analyzeBtn" class="btn btn-accent btn-lg">
+                <span>Detaylı Analiz Et</span>
+                <span>🔍</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Aşama 3: Sonuçlar -->
+          <div id="analysisResult" class="hidden">
+            <div class="card mb-lg">
+              <div class="flex flex-between mb-md">
+                <h2>🎯 Kapsamlı Analiz Sonuçları</h2>
+                <div class="badge badge-success">Adım 3/3</div>
+              </div>
+              
+              <!-- Genel Puan -->
+              <div class="floating-card mb-lg">
+                <h4>📊 Genel Değerlendirme</h4>
+                <div class="progress">
+                  <div class="progress-bar" id="scoreBar" style="width: 0%"></div>
+                </div>
+                <p id="scoreText" class="text-center font-bold"></p>
+              </div>
+              
+              <!-- Analiz Detayları -->
+              <div class="grid grid-1 gap-lg">
+                <div class="card">
+                  <h4>🇹🇷 Türkçe Çeviri Analizi</h4>
+                  <div id="turkishAnalysis" class="text-secondary"></div>
+                </div>
+                
+                <div class="card">
+                  <h4>🔙 Geri Çeviri Analizi</h4>
+                  <div id="backTranslationAnalysis" class="text-secondary"></div>
+                </div>
+                
+                <div class="card">
+                  <h4>🔄 Metin Karşılaştırması</h4>
+                  <div id="comparisonAnalysis" class="text-secondary"></div>
+                </div>
+              </div>
+              
+              <div class="text-center mt-lg">
+                <button class="btn btn-outline" onclick="location.reload()">
+                  <span>🔄 Yeni Çeviri</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terminoloji Paneli -->
+      <div class="terminology-panel">
+        <div class="card" style="position: sticky; top: 2rem;">
+          <div class="flex gap-sm mb-lg">
+            <div class="badge">T</div>
+            <h3 style="margin-bottom: 0;">Terminoloji</h3>
+          </div>
+          
+          <div id="terminologyContent">
+            <div class="text-center text-muted p-lg">
+              <div class="skeleton" style="height: 20px; margin-bottom: 1rem;"></div>
+              <div class="skeleton" style="height: 20px; width: 60%;"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    // Theme Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        icon.textContent = '☀️';
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        icon.textContent = '🌙';
+      }
+    }
+
     // Seçilen parametreleri al
     const targetLanguage = sessionStorage.getItem('targetLanguage') || 'fr';
     const field = sessionStorage.getItem('field') || 'medicine';
-    const languageNames = { fr: 'Fransızca', es: 'İspanyolca' };
-    const fieldNames = { medicine: 'Tıp', law: 'Hukuk' };
+    const languageNames = { 
+      fr: { name: 'Fransızca', flag: '🇫🇷' },
+      es: { name: 'İspanyolca', flag: '🇪🇸' }
+    };
+    const fieldNames = { 
+      medicine: { name: 'Tıp', icon: '⚕️' }, 
+      law: { name: 'Hukuk', icon: '⚖️' } 
+    };
 
     // DOM Elementlerini güvenli şekilde seç
     const getElementSafe = (id) => {
@@ -211,6 +176,7 @@
       originalTextCard: getElementSafe('originalTextCard'),
       userTranslation: getElementSafe('userTranslation'),
       submitBtn: getElementSafe('submitTranslation'),
+      originalTextSection: getElementSafe('originalTextSection'), // Bu satır eklendi
       backTranslationSection: getElementSafe('backTranslationSection'),
       analyzeBtn: getElementSafe('analyzeBtn'),
       analysisResult: getElementSafe('analysisResult'),
@@ -220,7 +186,8 @@
       comparisonAnalysis: getElementSafe('comparisonAnalysis'),
       scoreBar: getElementSafe('scoreBar'),
       scoreText: getElementSafe('scoreText'),
-      backTranslation: getElementSafe('backTranslation') // Bu satır eklendi
+      backTranslation: getElementSafe('backTranslation'),
+      terminologyContent: getElementSafe('terminologyContent')
     };
 
     // Uygulama başlangıcı
@@ -236,22 +203,27 @@
     });
 
     function setupUI() {
-      elements.pageTitle.textContent = `${fieldNames[field]} Çeviri Uygulaması`;
+      const lang = languageNames[targetLanguage]; 
+      const fieldData = fieldNames[field];
+      
+      elements.pageTitle.textContent = `${fieldData.name} Çeviri Uygulaması`;
       elements.sourceTextHeader.innerHTML = `
-        <span style="background: #4895ef; color: white; padding: 2px 8px; border-radius: 10px;">
-          ${languageNames[targetLanguage]}
-        </span>
-        <span style="background: #f72585; color: white; padding: 2px 8px; border-radius: 10px;">
-          ${fieldNames[field]}
-        </span>
-        Akademik Metin
+        <div class="badge badge-success">${lang.flag} ${lang.name}</div>
+        <div class="badge">${fieldData.icon} ${fieldData.name}</div>
       `;
     }
 
     async function loadGeneratedText() {
-      elements.originalTextCard.innerHTML = '<span class="loading"></span> Metin oluşturuluyor...';
+      elements.originalTextCard.innerHTML = `
+        <div class="flex flex-center gap-md">
+          <div class="loading"></div>
+          <span>Akademik metin oluşturuluyor...</span>
+        </div>
+      `;
+      showTerminologyLoading();
       
       try {
+        // İlk kodunuzdaki API çağrısı
         const response = await fetch('http://localhost:3000/generate-text', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -259,53 +231,170 @@
         });
 
         const data = await response.json();
-        elements.originalTextCard.textContent = data.text || data.fallback;
+        
+        elements.originalTextCard.innerHTML = `
+          <div class="text-secondary" style="line-height: 1.8; font-size: 1.1rem;">
+            ${data.text || data.fallback}
+          </div>
+        `;
+        
         elements.userTranslation.disabled = false;
         elements.submitBtn.disabled = false;
 
+        // Terminoloji verilerini yükle
+        if (data.terminology && data.terminology.length > 0) {
+          displayTerminology(data.terminology);
+        } else {
+          // Demo amaçlı örnek terminoloji
+          const sampleTerms = getSampleTerminology();
+          displayTerminology(sampleTerms);
+        }
+
       } catch (error) {
-        elements.originalTextCard.textContent = 'Metin yüklenemedi. Lütfen sayfayı yenileyin.';
-        console.error('Hata:', error);
+        console.error('API hatası:', error);
+        
+        // Hata durumunda demo metin göster
+        const sampleTexts = {
+          medicine: {
+            fr: "La pathogenèse de cette maladie implique plusieurs mécanismes complexes. Les symptômes cliniques se manifestent progressivement, nécessitant un diagnostic différentiel approfondi. Le traitement thérapeutique doit être adapté selon la sévérité des manifestations pathologiques observées.",
+            es: "La fisiopatología de esta enfermedad involucra múltiples procesos bioquímicos. Los síntomas clínicos requieren una evaluación diagnóstica exhaustiva. El protocolo terapéutico debe individualizarse según la gravedad del cuadro clínico."
+          },
+          law: {
+            fr: "La jurisprudence établie par cette décision constitue un précédent important. Les implications juridiques affectent l'interprétation des dispositions contractuelles. La procédure contentieuse doit respecter les principes du contradictoire et les droits de la défense.",
+            es: "La jurisprudencia establecida por esta resolución constituye un precedente significativo. Las implicaciones legales afectan la interpretación de las cláusulas contractuales. El procedimiento contencioso debe respetar los principios procesales fundamentales."
+          }
+        };
+
+        const fallbackText = sampleTexts[field][targetLanguage];
+        
+        elements.originalTextCard.innerHTML = `
+          <div class="text-secondary" style="line-height: 1.8; font-size: 1.1rem;">
+            <div style="background: #fff3cd; color: #856404; padding: 0.5rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.9rem;">
+              ⚠️ API bağlantısı kurulamadı. Demo metin gösteriliyor.
+            </div>
+            ${fallbackText}
+          </div>        `;
+        
+        elements.userTranslation.disabled = false;
+        elements.submitBtn.disabled = false;
+
+        // Demo terminoloji
+        const sampleTerms = getSampleTerminology();
+        displayTerminology(sampleTerms);
       }
+    }
+
+    function getSampleTerminology() {
+      const terms = {
+        medicine: {
+          fr: [
+            { word: "pathogenèse", translation: "hastalık oluşumu", definition: "Hastalığın gelişim süreci" },
+            { word: "diagnostic différentiel", translation: "ayırıcı tanı", definition: "Benzer belirtili hastalıkları ayırt etme" },
+            { word: "thérapeutique", translation: "tedavi edici", definition: "Tedavi ile ilgili" },
+            { word: "manifestations", translation: "belirtiler", definition: "Hastalığın görünen işaretleri" }
+          ],
+          es: [
+            { word: "fisiopatología", translation: "fizyopatoloji", definition: "Hastalıkta organ fonksiyonları" },
+            { word: "bioquímicos", translation: "biyokimyasal", definition: "Kimyasal süreçlerle ilgili" },
+            { word: "diagnóstica", translation: "tanısal", definition: "Teşhis ile ilgili" },
+            { word: "individualizar", translation: "bireyselleştirmek", definition: "Kişiye özel hale getirmek" }
+          ]
+        },
+        law: {
+          fr: [
+            { word: "jurisprudence", translation: "içtihat", definition: "Mahkeme kararları bütünü" },
+            { word: "précédent", translation: "emsal", definition: "Gelecek davalar için örnek" },
+            { word: "contradictoire", translation: "çelişmeli usul", definition: "Tarafların karşılıklı savunması" },
+            { word: "contentieuse", translation: "davaya konu", definition: "Mahkemede görülen" }
+          ],
+          es: [
+            { word: "jurisprudencia", translation: "içtihat hukuku", definition: "Mahkeme kararları sistemi" },
+            { word: "resolución", translation: "karar", definition: "Yargı organının verdiği hüküm" },
+            { word: "cláusulas", translation: "maddeler", definition: "Sözleşme hükümleri" },
+            { word: "contencioso", translation: "uyuşmazlık", definition: "Hukuki anlaşmazlık" }
+          ]
+        }
+      };
+
+      return terms[field][targetLanguage] || [];
+    }
+
+    function displayTerminology(terms) {
+      if (!terms || terms.length === 0) {
+        elements.terminologyContent.innerHTML = `
+          <div class="text-center text-muted p-lg">
+            <p>📚 Bu metinde özel terminoloji tespit edilemedi</p>
+          </div>
+        `;
+        return;
+      }
+
+      const terminologyHTML = terms.map(term => `
+        <div class="card mb-sm" style="padding: 1rem; cursor: pointer; transition: all 0.3s;" 
+            onmouseover="this.style.transform='translateY(-2px)'" 
+            onmouseout="this.style.transform='translateY(0)'">
+          <div class="font-medium text-primary">${term.word}</div>
+          <div class="text-muted" style="font-size: 0.9rem; margin: 0.25rem 0;">${term.translation}</div>
+          ${term.definition ? `<div class="text-secondary" style="font-size: 0.8rem;">${term.definition}</div>` : ''}
+        </div>
+      `).join('');
+
+      elements.terminologyContent.innerHTML = terminologyHTML;
+    }
+
+    function showTerminologyLoading() {
+      elements.terminologyContent.innerHTML = `
+        <div class="text-center p-lg">
+          <div class="loading mb-md"></div>
+          <p class="text-muted">Terminoloji analiz ediliyor...</p>
+        </div>
+      `;
     }
 
     function setupEventListeners() {
       elements.submitBtn.addEventListener('click', () => {
         if (!elements.userTranslation.value.trim()) {
-          alert('Lütfen çeviri yapın!');
+          showNotification('Lütfen çeviri yapın!', 'warning');
           return;
         }
         
         elements.userTranslationDisplay.textContent = elements.userTranslation.value;
-        elements.originalTextCard.classList.add('fade-out');
-        elements.userTranslation.classList.add('fade-out');
         
-        setTimeout(() => {
-          elements.originalTextCard.classList.add('hidden');
-          elements.userTranslation.classList.add('hidden');
-          elements.backTranslationSection.classList.remove('hidden');
-        }, 500);
+        // Smooth transition - null check eklendi
+        if (elements.originalTextSection) {
+          elements.originalTextSection.classList.add('fade-out');
+          
+          setTimeout(() => {
+            elements.originalTextSection.classList.add('hidden');
+            elements.backTranslationSection.classList.remove('hidden');
+            elements.backTranslationSection.classList.add('slide-up');
+          }, 300);
+        }
       });
 
       elements.analyzeBtn.addEventListener('click', async () => {
-        const backTranslationText = elements.backTranslation.value; // Düzeltildi
+        const backTranslationText = elements.backTranslation.value;
         
         if (!backTranslationText.trim()) {
-          alert('Lütfen geri çeviri yapın!');
+          showNotification('Lütfen geri çeviri yapın!', 'warning');
           return;
         }
         
         try {
           elements.analyzeBtn.disabled = true;
-          elements.analyzeBtn.innerHTML = '<span class="loading"></span> Analiz ediliyor...';
+          elements.analyzeBtn.innerHTML = `
+            <div class="loading"></div>
+            <span>Detaylı analiz yapılıyor...</span>
+          `;
           
+          // İlk kodunuzdaki API çağrısı
           const response = await fetch('http://localhost:3000/analyze', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              originalText: elements.originalTextCard.textContent,
+              originalText: elements.originalTextCard.textContent.replace('⚠️ API bağlantısı kurulamadı. Demo metin gösteriliyor.', '').trim(),
               userTranslation: elements.userTranslation.value,
-              backTranslation: backTranslationText, // Düzeltildi
+              backTranslation: backTranslationText,
               targetLanguage,
               field
             })
@@ -315,17 +404,37 @@
           displayAnalysisResults(data.analysis);
           
         } catch (error) {
-          console.error('Analiz hatası:', error);
-          elements.analysisResult.innerHTML = `
-            <div class="text-card">
-              <h3>Analiz Hatası</h3>
-              <p>${error.message}</p>
-            </div>
-          `;
+          console.error('API Analiz hatası:', error);
+          
+          // Hata durumunda demo analiz göster
+          const demoAnalysis = {
+            turkishAnalysis: "✅ <strong>Güçlü Yönler:</strong><br>• Akademik terminoloji doğru kullanılmış<br>• Metin yapısı korunmuş<br>• Çeviri akıcı ve anlaşılır<br><br>⚠️ <strong>Geliştirilebilir Alanlar:</strong><br>• Bazı teknik terimler daha spesifik olabilir<br>• Cümle bağlantıları güçlendirilebilir<br><br><div style='background: #fff3cd; color: #856404; padding: 0.5rem; border-radius: 0.5rem; margin-top: 1rem; font-size: 0.9rem;'>⚠️ API bağlantısı kurulamadı. Demo analiz gösteriliyor.</div>",
+            
+            backTranslationAnalysis: "🔄 <strong>Geri Çeviri Başarısı:</strong><br>• Orijinal metinle %85 uyumluluk<br>• Ana kavramlar korunmuş<br>• Terminoloji tutarlılığı yüksek<br><br>📝 <strong>Dikkat Edilmesi Gereken Noktalar:</strong><br>• Birkaç nüans kaybı tespit edildi<br>• Genel anlam bütünlüğü sağlanmış",
+            
+            comparisonAnalysis: "🎯 <strong>Karşılaştırma Sonuçları:</strong><br>• Semantik uyumluluk: Yüksek<br>• Terminoloji doğruluğu: Çok iyi<br>• Metin akışı: İyi<br>• Akademik üslup: Uygun<br><br>💡 <strong>Öneriler:</strong><br>• Teknik terimler için sözlük desteği alınabilir<br>• Uzman gözden geçirmesi önerilir",
+            
+            score: 87
+          };
+          
+          displayAnalysisResults(demoAnalysis);
+          showNotification('API bağlantısı kurulamadı. Demo analiz gösteriliyor.', 'warning');
+          
         } finally {
           elements.analyzeBtn.disabled = false;
-          elements.analyzeBtn.textContent = 'Analiz Et';
-          elements.analysisResult.classList.remove('hidden');
+          elements.analyzeBtn.innerHTML = `
+            <span>Detaylı Analiz Et</span>
+            <span>🔍</span>
+          `;
+          
+          if (elements.backTranslationSection) {
+            elements.backTranslationSection.classList.add('fade-out');
+            setTimeout(() => {
+              elements.backTranslationSection.classList.add('hidden');
+              elements.analysisResult.classList.remove('hidden');
+              elements.analysisResult.classList.add('scale-in');
+            }, 300);
+          }
         }
       });
     }
@@ -335,15 +444,127 @@
         console.error('Analiz verisi yok!');
         return;
       }
-      
-      elements.turkishAnalysis.innerHTML = analysis.turkishAnalysis?.replace(/\n/g, '<br>') || 'Analiz yok';
-      elements.backTranslationAnalysis.innerHTML = analysis.backTranslationAnalysis?.replace(/\n/g, '<br>') || 'Analiz yok';
-      elements.comparisonAnalysis.innerHTML = analysis.comparisonAnalysis?.replace(/\n/g, '<br>') || 'Analiz yok';
-      
+  
+      // Format analysis text with better styling
+        const formatAnalysis = (text) => {
+        return text
+          .replace(/\*\*\*(.*?)\*\*\*/g, '<div class="analysis-highlight">$1</div>')
+          .replace(/\*\*(.*?)\*\*/g, '<strong class="analysis-strong">$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em class="analysis-emphasis">$1</em>')
+          .replace(/•/g, '<span class="bullet-point">•</span>')
+          .replace(/(\d+\.)/g, '<span class="number-point">$1</span>')
+          .replace(/([🎯📊✅⚠️❌🔄💡📝])/g, '<span class="analysis-emoji">$1</span>')
+          .replace(/\n/g, '<br>');
+      };
+  
+      elements.turkishAnalysis.innerHTML = `<div class="analysis-content">${formatAnalysis(analysis.turkishAnalysis || 'Analiz yok')}</div>`;
+      elements.backTranslationAnalysis.innerHTML = `<div class="analysis-content">${formatAnalysis(analysis.backTranslationAnalysis || 'Analiz yok')}</div>`;
+      elements.comparisonAnalysis.innerHTML = `<div class="analysis-content">${formatAnalysis(analysis.comparisonAnalysis || 'Analiz yok')}</div>`;
+  
       const score = analysis.score || 0;
       elements.scoreBar.style.width = `${score}%`;
-      elements.scoreText.textContent = `Genel Puan: ${score}/100`;
+  
+      let scoreColor = 'var(--error)';
+      let scoreEmoji = '❌';
+      if (score >= 90) {
+        scoreColor = 'var(--success)';
+        scoreEmoji = '🎉';
+      } else if (score >= 80) {
+        scoreColor = 'var(--accent-solid)';
+        scoreEmoji = '✅';
+      } else if (score >= 70) {
+          scoreColor = 'var(--warning)';
+        scoreEmoji = '⚠️';
+      }
+  
+      elements.scoreBar.style.background = scoreColor;
+      elements.scoreText.innerHTML = `
+        <span class="score-emoji">${scoreEmoji}</span><br>
+        <strong class="score-main">Genel Puan: ${score}/100</strong><br>
+        <small class="score-subtitle">Çeviri kalitesi: ${score >= 90 ? 'Mükemmel' : score >= 80 ? 'Çok İyi' : score >= 70 ? 'İyi' : 'Geliştirilmeli'}</small>
+      `;
     }
+
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.style.cssText = `
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        padding: 1rem 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: var(--glass-backdrop);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        color: var(--text-primary);
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+        max-width: 300px;
+      `;
+      
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => notification.remove(), 300);
+      }, 4000);
+    }
+
+    // Add custom CSS for notifications and animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes slideOut {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+      }
+      
+      .fade-out {
+        animation: fadeOut 0.3s forwards;
+      }
+      
+      .slide-up {
+        animation: slideUp 0.3s ease-out;
+      }
+      
+      .scale-in {
+        animation: scaleIn 0.3s ease-out;
+      }
+      
+      @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(-20px); }
+      }
+      
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>
