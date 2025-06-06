@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linguaiser - Home of the translators</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="mainpage.css">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <h3>Linguaiser</h3>
+                </div>
+                <div class="nav-menu">
+                    <a href="#home" class="nav-link">Ana Sayfa</a>
+                    <a href="#about" class="nav-link">Hakkımızda</a>
+                    <a href="#services" class="nav-link">Hizmetler</a>
+                    <a href="#contact" class="nav-link">İletişim</a>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-outline btn-sm">Giriş Yap</button>
+                    <button class="btn btn-primary btn-sm">Başla</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text fade-in">
+                    <h1 class="hero-title">
+                        Geleceği <span class="text-gradient">Şekillendir</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Modern teknoloji çözümleri ile işinizi bir sonraki seviyeye taşıyın. 
+                        Yapay zeka, bulut teknolojileri ve dijital dönüşüm alanında uzman ekibimizle tanışın.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg glow-effect">
+                            <span><a href="index.html">Hemen Başla</a></span>
+                            <span>🚀</span>
+                        </button>
+                        <button class="btn btn-ghost btn-lg">
+                            <span>Demo İzle</span>
+                            <span>▶️</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual slide-up">
+                    <div class="floating-card hero-card">
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">250+</div>
+                                <div class="stat-label">Mutlu Müşteri</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">98%</div>
+                                <div class="stat-label">Memnuniyet</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Destek</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="about" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Neden Bizi Seçmelisiniz?</h2>
+                <p>Modern teknoloji çözümleri ile fark yaratan hizmetlerimiz</p>
+            </div>
+            <div class="grid grid-3">
+                <div class="card scale-in">
+                    <div class="feature-icon">🤖</div>
+                    <h4>Yapay Zeka</h4>
+                    <p>En son AI teknolojileri ile çeviri yapmayı ve dil öğrenmeyi bir üst boyuta taşıyın.</p>
+                    <div class="feature-badge">
+                        <span class="badge badge-success">Yeni</span>
+                    </div>
+                </div>
+                <div class="card scale-in">
+                    <div class="feature-icon">👨‍💼</div>
+                    <h4>Çeviri Araçları</h4>
+                    <p>Bir profesyonel olarak yapay zeka destekli araçlarımızdan yararlanın.</p>
+                    <div class="feature-badge">
+                        <span class="badge">Popüler</span>
+                    </div>
+                </div>
+                <div class="card scale-in">
+                    <div class="feature-icon">📖</div>
+                    <h4>Etkili Öğrenme</h4>
+                    <p>Öğrenmenin en etkili ve eğlenceli yolunu keşfedin.</p>
+                    <div class="feature-badge">
+                        <span class="badge badge-warning">Önemli</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Paketlerimiz</h2>
+                <p>Kapsamlı özelleştirilmiş paketler</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card floating-card">
+                    <div class="service-header">
+                        <div class="service-icon">👩‍🎓</div>
+                        <h3>Öğrenci Paketi</h3>
+                    </div>
+                    <ul class="service-features">
+                        <li>Çeviri Öğrenim Araçları</li>
+                        <li>Oyunlaştırma Sistemi</li>
+                        <li>100 Araç Kullanım Hakkı</li>
+                    </ul>
+                    <div class="service-price">
+                        <span class="price">₺2.500</span>
+                        <span class="price-period">/proje</span>
+                    </div>
+                    <button class="btn btn-primary">Detaylar</button>
+                </div>
+
+                <div class="service-card floating-card featured">
+                    <div class="featured-badge">En Popüler</div>
+                    <div class="service-header">
+                        <div class="service-icon">👨‍💼</div>
+                        <h3>Çevirmen Paketi</h3>
+                    </div>
+                    <ul class="service-features">
+                        <li>Çeviri Öğrenim Araçları</li>
+                        <li>Profesyonel Çeviri Araçları</li>
+                        <li>500 Araç Kullanım Hakkı</li>
+                    </ul>
+                    <div class="service-price">
+                        <span class="price">₺5.000</span>
+                        <span class="price-period">/uygulama</span>
+                    </div>
+                    <button class="btn btn-accent">Başla</button>
+                </div>
+
+                <div class="service-card floating-card">
+                    <div class="service-header">
+                        <div class="service-icon">🧑‍🏫</div>
+                        <h3>Öğretmen Paketi</h3>
+                    </div>
+                    <ul class="service-features">
+                        <li>Çeviri Öğrenim Araçları</li>
+                        <li>Profesyonel Çeviri Araçları</li>
+                        <li>1000 Araç Kullanım Hakkı</li>
+                        <li>Sınıf Oluşturma Hakkı</li>
+                    </ul>
+                    <div class="service-price">
+                        <span class="price">₺1.500</span>
+                        <span class="price-period">/ay</span>
+                    </div>
+                    <button class="btn btn-secondary">Keşfet</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-number" data-target="500">0</div>
+                    <div class="stat-label">Tamamlanan Proje</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number" data-target="250">0</div>
+                    <div class="stat-label">Mutlu Müşteri</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-number" data-target="15">0</div>
+                    <div class="stat-label">Ödül</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌟</div>
+                    <div class="stat-number" data-target="98">0</div>
+                    <div class="stat-label">Memnuniyet %</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>İletişime Geçin</h2>
+                <p>Projeleriniz için hemen iletişime geçin</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <h4>E-posta</h4>
+                            <p>info@linguaiser.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div>
+                            <h4>Telefon</h4>
+                            <p>+90 555 123 45 67</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <h4>Adres</h4>
+                            <p>Ankara, Türkiye</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form card">
+                    <div class="form-group">
+                        <label class="form-label">Adınız</label>
+                        <input type="text" class="form-input" placeholder="Adınızı girin">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">E-posta</label>
+                        <input type="email" class="form-input" placeholder="E-posta adresinizi girin">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mesajınız</label>
+                        <textarea class="form-textarea" placeholder="Mesajınızı yazın"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gönder</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Linguaiser</h3>
+                    <p>Tüm çevirmenlerin evi.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Hizmetler</h4>
+                        <a href="#">Web Geliştirme</a>
+                        <a href="#">Mobil Uygulama</a>
+                        <a href="#">Dijital Pazarlama</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Şirket</h4>
+                        <a href="#">Hakkımızda</a>
+                        <a href="#">Kariyer</a>
+                        <a href="#">Blog</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Destek</h4>
+                        <a href="#">Yardım</a>
+                        <a href="#">İletişim</a>
+                        <a href="#">SSS</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Linguaiser. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeIcon.textContent = '☀️';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '🌙';
+            }
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current);
+                    }
+                }, 16);
+            });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    
+                    if (entry.target.classList.contains('stats')) {
+                        animateCounters();
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements
+        document.querySelectorAll('.card, .stats').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Form submission
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Mesajınız gönderildi! En kısa sürede dönüş yapacağız.');
+        });
+    </script>
+</body>
+</html>
